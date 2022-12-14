@@ -21,4 +21,19 @@ public class OrganizationServiceImpl implements IOrganizationService{
 		return organizationDao.findAll();
 	}
 
+	@Override
+	public List<Organization> getAllActive() {
+		
+		/*
+		   public List<Alumnos> findAlumnosByDni(Alumnos alumnos) {
+		 
+		    Query q = em.createQuery("select a from Alumnos a where a.dni = " + alumnos.getDni());
+		    return q.getResultList();
+		}
+		*/
+		return organizationDao.findByActive();
+	}
+
+
+
 }

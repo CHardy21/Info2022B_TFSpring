@@ -14,5 +14,7 @@ public interface IOrganizationDao extends JpaRepository<Organization, Long> {
 	
 	public List<Organization> findAll();
 	
+	public List<Organization> findByActive();
+	
 
 }

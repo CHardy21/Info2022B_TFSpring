@@ -20,12 +20,27 @@ public class OrganizationRestcontroller {
 	@Autowired
 	private IOrganizationDao organizationService;
 	
+	
+	/*
+	 ●	El controlador de la empresa (Organization) va a tener 
+			1.	un método para registrar una empresa,
+			2.	modificar una empresa o 
+			3.	eliminar una empresa (solicitará clave para las últimas 2 nombradas.), 
+			4.	un método para traer los datos de una empresa activa según su cuit o nombre, 
+			5.	y un método para traer todas las empresas registradas activas.
+	*/
 	@GetMapping("/organizations/all")
 	public ResponseEntity<HashMap<String, Object>> todasLasOrganizaciones() {
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		
-		List<Organization> organizaciones = organizationService.findAll();
+		List<Organization> organizaciones = organizationService.findByActive();
 		response.put("organizations", organizaciones);		
 		return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
 	}
+	
+
+	
+	
+	
+	
 }

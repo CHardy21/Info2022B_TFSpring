@@ -62,6 +62,9 @@ public class Organization implements Serializable{
 	@NotBlank(message = "Debe ingresar un email.")
 	private String email;
 	
+	@Column(name="org_active", columnDefinition = "boolean default true")
+	private Boolean active;
+	
 	@Column(name="org_create_date")
 	@CreationTimestamp
     private LocalDateTime createDate;

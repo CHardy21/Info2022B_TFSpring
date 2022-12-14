@@ -8,4 +8,6 @@ import com.chardy.springSisTurn.entity.Organization;
 public interface IOrganizationService {
 
 	public List<Organization> getAll();
+	public List<Organization> getAllActive();
+	
 }

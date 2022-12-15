@@ -48,7 +48,6 @@ public class Organization implements Serializable{
 	private String name;
 	
 	@Column(name="org_cuit", length= 11)
-	@NotBlank(message = "El campo CUIT no puede ser nulo.")
 	private Long cuit;
 	
 	@Column(name="org_address")

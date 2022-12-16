@@ -33,6 +33,7 @@ public class Organization implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(nullable=false, unique = true)
 	private Long id;
 
 	//@ManyToOne
@@ -45,8 +46,8 @@ public class Organization implements Serializable{
 	@Column(name="org_name", length =30, unique = true)
 	private String name;
 	
-	@Column(name="org_cuit", length= 11)
-	private Long cuit;
+	@Column(name="org_cuit", length= 13)
+	private String cuit;
 	
 	@Column(name="org_address")
 	private String address;

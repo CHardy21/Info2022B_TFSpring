@@ -20,6 +20,11 @@ public interface IOrganizationDao extends JpaRepository<Organization, Long> {
 	public List<Organization> findByActive();
 
 	public OrganizationDto save(OrganizationDto organizationDto);
-	
 
+	@Query("select u from organizations u where u.cuit = ?1")
+	public Organization findByCuit(String cuit);
+	
+	@Query("select u from organizations u where u.name = ?1")
+	public Organization findByName(String name);
+	
 }

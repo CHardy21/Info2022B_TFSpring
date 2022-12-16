@@ -26,8 +26,18 @@ public class OrganizationServiceImpl implements IOrganizationService{
 
 	@Override
 	public List<Organization> getAllActive() {
-		// TODO Auto-generated method stub
 		return organizationDao.findByActive();
+	}
+	
+	@Override
+	public Organization findByCuit(String cuit) {
+		return organizationDao.findByCuit(cuit);
+	}
+	
+	@Override
+	public Organization findByName(String name) {
+		// TODO Apéndice de método generado automáticamente
+		return organizationDao.findByName(name);
 	}
 
 	@Override
@@ -37,5 +47,11 @@ public class OrganizationServiceImpl implements IOrganizationService{
 		organizationDto = OrganizationWrapper.entityToDto(organization);
 		return organizationDto;
 	}
+
+
+
+
+	
+
 
 }

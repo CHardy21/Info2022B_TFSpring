@@ -11,8 +11,13 @@ public interface IOrganizationService {
 
 	public List<Organization> getAll();
 	public List<Organization> getAllActive();
-	
+	public Organization findByCuit(String cuit);
+	public Organization findByName(String name);
+		
 	public OrganizationDto save(OrganizationDto organization);
+
+	
+
 
 	
 }

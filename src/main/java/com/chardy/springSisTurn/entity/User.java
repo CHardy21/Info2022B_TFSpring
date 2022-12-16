@@ -1,8 +1,6 @@
 package com.chardy.springSisTurn.entity;
 
 import java.io.Serializable;
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,10 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//anotaciones para lombok
 @Data
 @AllArgsConstructor @NoArgsConstructor
-//fin anotaciones para lombox
 
 @Entity(name="users")
 public class User implements Serializable{

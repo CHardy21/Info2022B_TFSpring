@@ -22,11 +22,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-
-// anotaciones para lombok
 @Data
 @AllArgsConstructor @NoArgsConstructor
-// fin anotaciones para lombox
+
 
 @Entity(name="organizations")
 public class Organization implements Serializable{

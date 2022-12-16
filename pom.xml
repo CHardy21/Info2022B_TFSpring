@@ -15,7 +15,7 @@
 	<description>Informatorio 2022 b - Trabajo Final - Sistema de Turnos for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
-		<swagger.version>3.0.0</swagger.version>
+		
 	</properties>
 	<dependencies>
 		<dependency>

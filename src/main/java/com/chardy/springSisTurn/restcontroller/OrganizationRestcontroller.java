@@ -28,8 +28,8 @@ import com.chardy.springSisTurn.wrapper.OrganizationWrapper;
 @RestController
 public class OrganizationRestcontroller {
 	//private Logger log = LoggerFactory.getLogger(OrganizationRestcontroller.class);
+	
 	@Autowired
-	//private IOrganizationDao organizationService;
 	private IOrganizationService organizationService;
 	
 	

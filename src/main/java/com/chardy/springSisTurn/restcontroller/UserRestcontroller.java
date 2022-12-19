@@ -2,31 +2,22 @@ package com.chardy.springSisTurn.restcontroller;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.validation.Valid;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.chardy.springSisTurn.dto.OrganizationDto;
-import com.chardy.springSisTurn.entity.Organization;
 import com.chardy.springSisTurn.entity.User;
-import com.chardy.springSisTurn.wrapper.OrganizationWrapper;
+import com.chardy.springSisTurn.service.IUserService;
 
 @RequestMapping("/api/users")
 @RestController
 public class UserRestcontroller {
 
+	@Autowired
+	private IUserService userService;
 	
 	// View all registered and active users
 	
@@ -40,21 +31,21 @@ public class UserRestcontroller {
 		response.put("totalResults", user.size());
 		return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
 	}
-	/*	
+	
 	// View all users (active or not)
 		
 		@GetMapping("/all")
 		public ResponseEntity<HashMap<String, Object>> todosLosUsuarios() {
 			HashMap<String, Object> response = new HashMap<String, Object>();
 			
-			List<Organization> organizaciones = organizationService.getAll();
-			response.put("items", organizaciones);
-			response.put("totalResults", organizaciones.size());
+			List<User> users = userService.getAll();
+			response.put("items", users);
+			response.put("totalResults", users.size());
 			response.put("status", "ok");
 			return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
 		}
 		
-	
+		/*
 		// Search Organization by NAME
 		
 		@GetMapping("/name/{name}")

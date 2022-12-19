@@ -7,5 +7,6 @@ import com.chardy.springSisTurn.entity.User;
 public interface IUserService {
 	
 	public List<User> getAll();
+	public List<User> getAllActive();
 
 }

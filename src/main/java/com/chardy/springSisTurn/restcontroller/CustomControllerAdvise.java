@@ -33,9 +33,10 @@ private static final Logger log = LoggerFactory.getLogger(RestControllerAdvice.c
 																	WebRequest request) {
 
 		Map<String, Object> body = new LinkedHashMap<>();
-		body.put("timestamp", new Date());
-		body.put("status", status.value());
-
+		//body.put("timestamp", new Date());
+		body.put("status", "error");
+		body.put("code", status.value());
+		
 		// Get all errors
 		List<String> errors = ex.getBindingResult()
 				.getFieldErrors()
@@ -43,7 +44,7 @@ private static final Logger log = LoggerFactory.getLogger(RestControllerAdvice.c
 				.map(x -> x.getDefaultMessage())
 				.collect(Collectors.toList());
 		
-		body.put("errors", errors);
+		body.put("message", errors);
 		return new ResponseEntity<>(body, headers, status);
 	}	
 	

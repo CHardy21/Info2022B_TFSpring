@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.chardy.springSisTurn.dto.OrganizationDto;
 import com.chardy.springSisTurn.entity.Organization;
-import com.chardy.springSisTurn.repository.IOrganizationDao;
 import com.chardy.springSisTurn.service.IOrganizationService;
+import com.chardy.springSisTurn.wrapper.OrganizationWrapper;
 
 @RequestMapping("/api/organizations")
 @RestController
@@ -41,6 +42,7 @@ public class OrganizationRestcontroller {
 		
 		List<Organization> organizaciones = organizationService.getAllActive();
 		response.put("items", organizaciones);
+		response.put("status", "ok");
 		response.put("totalResults", organizaciones.size());
 		return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
 	}
@@ -63,15 +65,15 @@ public class OrganizationRestcontroller {
 	@GetMapping("/cuit/{cuit}")
 	public ResponseEntity<Map<String, Object>> findByCuit(@PathVariable(name = "cuit") String cuit){
 		Map<String, Object> response = new HashMap<>();
-		Organization newOrg = organizationService.findByCuit(cuit);
-		if (newOrg != null) {
-			response.put("items: ", newOrg);
+		Organization findOrg = organizationService.findByCuit(cuit);
+		if (findOrg != null) {
+			response.put("items: ", OrganizationWrapper.entityToDto(findOrg));
 			response.put("totalResults", "1");
 			response.put("status", "ok");
 		}else{
-			response.put("message", "La organizacion con Cuit: "+ cuit +" no existe");
 			response.put("status", "error");
 			response.put("code", "404");
+			response.put("message", "La organizacion con Cuit: "+ cuit +" no existe");
 		}
 		
 		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
@@ -84,7 +86,7 @@ public class OrganizationRestcontroller {
 		Map<String, Object> response = new HashMap<>();
 		Organization searchedOrg = organizationService.findByName(name);
 		if (searchedOrg != null) {
-			response.put("items: ", searchedOrg);
+			response.put("items: ", OrganizationWrapper.entityToDto(searchedOrg));
 			response.put("totalResults", "1");
 			response.put("status", "ok");
 		}else{
@@ -105,28 +107,67 @@ public class OrganizationRestcontroller {
 		
 		Map<String, Object> response = new HashMap<>();
 		OrganizationDto newOrganization = organizationService.save(orgDTO);
-		response.put("organization", newOrganization);
+		
+		response.put("items: ", newOrganization);
+		response.put("totalResults", "1");
+		response.put("status", "ok");
+		response.put("mesagge", "La Organización ha sido creada con Exito.");
+		
 		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 	} 
 	
-	// Eliminar una Organizacion.
+	// Delete Organization.
 	
 	@DeleteMapping("/delete")
 	  public ResponseEntity<Map<String, Object>> deleteOrg(@RequestParam(value="token",required = true) String token) {
 		Map<String, Object> response = new HashMap<>();
-		Organization org = organizationService.findByToken(token);
-		if (org != null) {
-		OrganizationDto orgDto = OrganizationWrapper.entityToDto(org);
-		OrganizationDto deleteOrg = organizationService.delete(orgDto);
-		response.put("Organizacion eliminada: ", deleteOrg);
+		Organization searchedByTokenOrg = organizationService.findByToken(token);
+		if (searchedByTokenOrg != null) {
+			
+			searchedByTokenOrg.setActive(false);
+			organizationService.delete(searchedByTokenOrg);
+			
+			response.put("totalResults", "1");
+			response.put("status", "ok");
+			response.put("message","La Organización "+searchedByTokenOrg.getName()+" ha sido desactivada/borrada");
+			
 		}else{
-			response.put("mensaje", "No se pudo borrar la informacion de la organizacion porque no existe.");
+			response.put("mensaje", "La Organizacion que intenta borrar/desactivar no existe.");
+			response.put("status", "error");
+			response.put("code", "404");
 		}
 		
 		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 	  }
 
 	
-	// Modificar una Organizacion.
+	// update Organization.
+	
+	@PutMapping("/update")
+	public ResponseEntity<Map<String, Object>> update(	@RequestParam(value="token",required = true) String token, 
+														@RequestBody @Valid OrganizationDto orgDto){
+		Map<String, Object> response = new HashMap<>();
+		
+		Organization updateOrg = organizationService.findByToken(token);
+		
+		if (updateOrg!=null) {
+			
+			OrganizationDto newUpdateOrg = organizationService.update(orgDto,token);
+			
+			//OrganizationDto newOrganization = organizationService.save(orgDTO);
+			//OrganizationDto updateOrg = organizationService.update(orgDto);
+			response.put("Organizacion: ", newUpdateOrg);
+			response.put("totalResults", "1");
+			response.put("status", "ok");
+			//response.put("message","La Organización "+newUpdateOrg.getName()+" ha sido actualizada.");
+		}else {
+			response.put("token: ", token);
+			response.put("updateOrg: ", updateOrg);
+			response.put("mensaje", "No se pudo actualizar la informacion de la organizacion.");
+		}
+		
+		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+	}
+	
 
 }

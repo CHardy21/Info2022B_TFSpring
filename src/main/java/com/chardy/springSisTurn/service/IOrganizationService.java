@@ -13,8 +13,12 @@ public interface IOrganizationService {
 	public List<Organization> getAllActive();
 	public Organization findByCuit(String cuit);
 	public Organization findByName(String name);
+	public Organization findByToken(String token);
 		
 	public OrganizationDto save(OrganizationDto organization);
+	public Organization save(Organization organization);
+	public Organization delete(Organization organization);
+	public OrganizationDto update(OrganizationDto organizacion,String token);
 
 	
 

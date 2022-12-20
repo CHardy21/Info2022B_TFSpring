@@ -20,11 +20,12 @@ import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 
 @Data
 @AllArgsConstructor @NoArgsConstructor
-
+@ToString
 
 @Entity(name="organizations")
 public class Organization implements Serializable{
@@ -70,7 +71,7 @@ public class Organization implements Serializable{
 	@Column(name="org_token")
 	private String token;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy="organizations")
 	@JoinColumn(name = "organizations_id")
 	private Set<Event> events;
 	

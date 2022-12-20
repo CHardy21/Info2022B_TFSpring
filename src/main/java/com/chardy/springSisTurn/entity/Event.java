@@ -15,6 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
@@ -41,27 +43,35 @@ public class Event implements Serializable{
 	@Column(name="event_location", length =30)
 	private String location;
 	
-	@Column(name="event_type")
+	@Column(name="event_type",  nullable = false)
 	private Boolean type;	 // 0 = Evento unico | 1 = evento recurrente
 	
-	@Column(name="event_date_init")
-	@DateTimeFormat(pattern="dd-MM-yyyy HH:mm")  //@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX") Date myDate 
+	@Column(name="event_date_init", nullable = false) //
+	//@DateTimeFormat(pattern="dd-MM-yyyy HH:mm")  //@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX") Date myDate 
 	private LocalDateTime dateInit; 
 		
 	@Column(name="event_date_finish")
 	@DateTimeFormat(pattern="dd-MM-yyyy HH:mm")
-	private LocalDateTime dateFinish;
+	private LocalDateTime dateFin;
 	
 	@Column(name="event_active", columnDefinition = "boolean default true")
 	private Boolean active;
 	
-	@Column(name="event_create_date")
+	@Column(name="event_create_date", updatable = false)
 	@CreationTimestamp
     private LocalDateTime creationDate; 
 		
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "events_id")
 	private Set<Turn> turns;
-	        
+	
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name="organizations")
+	@JoinColumn(name = "organizations_id",nullable=false)
+	private Organization organization;
 	// organization_id se agrega a la tabla por relacion en Organization entity
+
+
+
 }

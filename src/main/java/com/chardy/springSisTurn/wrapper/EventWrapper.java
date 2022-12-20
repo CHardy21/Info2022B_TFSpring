@@ -1,9 +1,7 @@
 package com.chardy.springSisTurn.wrapper;
 
 import com.chardy.springSisTurn.dto.EventDTO;
-import com.chardy.springSisTurn.dto.UserDTO;
 import com.chardy.springSisTurn.entity.Event;
-import com.chardy.springSisTurn.entity.User;
 
 public class EventWrapper {
 
@@ -12,27 +10,28 @@ public class EventWrapper {
 		
 		Event entity = new Event();
 		entity.setName(dto.getName());
-		entity.setLastName(dto.getLastName());
-		entity.setDni(dto.getDni());
-		entity.setPhone(dto.getPhone());
-		entity.setEmail(dto.getEmail());
+		entity.setLocation(dto.getLocation());
+		entity.setType(dto.getType());
+		entity.setDateInit(dto.getDateInit());
+		entity.setDateFin(dto.getDateFin());
 		
 		return entity;
 	}
 	
 	
-	public static UserDTO entityToDto(User entity) {
+	public static EventDTO entityToDto(Event entity) {
 		// poner solo lo que queremos mostrar
 		// en principio tiene los mismos campos q el dto
 		
-		if(entity == null) return new UserDTO();
+		if(entity == null) return new EventDTO();
 		
-		UserDTO dto = new UserDTO();
+		EventDTO dto = new EventDTO();
 		dto.setName(entity.getName());
-		dto.setLastName(entity.getLastName());
-		dto.setDni(entity.getDni());
-		dto.setEmail(entity.getEmail());
-		dto.setPhone(entity.getPhone());
+		dto.setLocation(entity.getLocation());
+		dto.setType(entity.getType());
+		dto.setDateInit(entity.getDateInit());
+		dto.setDateFin(entity.getDateFin());
+		
 		//dto.setActive(false);
 		return dto;
 	}

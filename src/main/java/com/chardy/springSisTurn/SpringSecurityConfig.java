@@ -16,4 +16,6 @@ public class SpringSecurityConfig extends WebMvcConfigurerAdapter {
 	    registry.addResourceHandler("/webjars/**")
 	      .addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
+	
+	
 }

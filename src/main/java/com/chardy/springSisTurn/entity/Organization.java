@@ -71,8 +71,10 @@ public class Organization implements Serializable{
 	@Column(name="org_token")
 	private String token;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy="organizations")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "organizations_id")
 	private Set<Event> events;
 	
+	//@OneToMany(mappedBy = "autor", cascade=CascadeType.ALL, orphanRemoval = true)
+    //private Set<Libro> libro = new HashSet<Libro>();
 }

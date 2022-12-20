@@ -1,5 +1,7 @@
 package com.chardy.springSisTurn.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,20 @@ public class EventServiceImpl implements IEventService{
 	@Autowired
 	private IEventDAO eventDAO;
 	
+	@Override
+	public List<Event> getAll() {
+		return eventDAO.findAll();
+	}
 	
+	@Override
+	public List<Event> getAllActive() {
+		return eventDAO.findByActive();
+	}
+	@Override
+	public Organization findByCuit(String cuit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	@Override
 	public Organization findByToken(String tokenOrg) {
 		return eventDAO.findByToken(tokenOrg);
@@ -43,6 +58,7 @@ public class EventServiceImpl implements IEventService{
 		
 		return eventDTO;
 	}
+
 
 
 

@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.ForeignKey;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -66,12 +67,18 @@ public class Event implements Serializable{
 	private Set<Turn> turns;
 	
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(name="organizations")
-	@JoinColumn(name = "organizations_id",nullable=false)
-	private Organization organization;
+	//@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	//@JoinTable(name="organizations")
+	//@JoinColumn(name = "organizations_id")
+	//private Organization organization;
 	// organization_id se agrega a la tabla por relacion en Organization entity
 
-
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(	foreignKey = @ForeignKey(name = "fk_events_organizations_id"), 
+					name="organizations_id", 
+					referencedColumnName = "id", 
+					columnDefinition = "int"
+				  )
+    private Organization organization;
 
 }

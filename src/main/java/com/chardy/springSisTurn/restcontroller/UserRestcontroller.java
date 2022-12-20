@@ -2,15 +2,27 @@ package com.chardy.springSisTurn.restcontroller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.chardy.springSisTurn.dto.UserDTO;
 import com.chardy.springSisTurn.entity.User;
 import com.chardy.springSisTurn.service.IUserService;
+import com.chardy.springSisTurn.wrapper.UserWrapper;
 
 @RequestMapping("/api/users")
 @RestController
@@ -45,19 +57,19 @@ public class UserRestcontroller {
 			return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
 		}
 		
-		/*
-		// Search Organization by NAME
 		
-		@GetMapping("/name/{name}")
-		public ResponseEntity<Map<String, Object>> findByName(@PathVariable(name = "name") String name){
+		// Search User by DNI
+		
+		@GetMapping("/dni/{dni}")
+		public ResponseEntity<Map<String, Object>> findByName(@PathVariable(name = "dni") String dni){
 			Map<String, Object> response = new HashMap<>();
-			Organization searchedOrg = organizationService.findByName(name);
-			if (searchedOrg != null) {
-				response.put("items: ", OrganizationWrapper.entityToDto(searchedOrg));
+			User searchedUser = userService.findByDni(dni);
+			if (searchedUser != null) {
+				response.put("items: ", UserWrapper.entityToDto(searchedUser));
 				response.put("totalResults", "1");
 				response.put("status", "ok");
 			}else{
-				response.put("message", "La organizacion con nombre: '"+ name +"' no existe");
+				response.put("message", "No existe ningun usuario con DNI: '"+ dni +"'.");
 				response.put("status", "error");
 				response.put("code", "404");
 			}
@@ -65,20 +77,41 @@ public class UserRestcontroller {
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 		}
 		
+		// Search User by LastName
+		
+		@GetMapping("/lastname/{lastname}")
+		public ResponseEntity<Map<String, Object>> findByLastName(@PathVariable(name = "lastname") String lastname){
+			Map<String, Object> response = new HashMap<>();
+			User searchedUser = userService.findByLastName(lastname);
+			if (searchedUser != null) {
+				response.put("items: ", UserWrapper.entityToDto(searchedUser));
+				response.put("totalResults", "1");
+				response.put("status", "ok");
+			}else{
+				response.put("message", "No existe ningun usuario con Apellido: '"+ lastname +"'.");
+				response.put("status", "error");
+				response.put("code", "404");
+			}
+			
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+		}
+		
+		
 		// Register New User.
 		
 		@PostMapping("/add")
-		public ResponseEntity<Map<String, Object>> nuevaOrganizacion(@RequestBody @Valid OrganizationDto orgDTO){
+		public ResponseEntity<Map<String, Object>> nuevaOrganizacion(@RequestBody @Valid UserDTO userDTO){
 			
 			//log.info("Organization: "+organizationDto.toString());
 			
 			Map<String, Object> response = new HashMap<>();
-			OrganizationDto newOrganization = organizationService.save(orgDTO);
+			UserDTO newUser = userService.save(userDTO);
 			
-			response.put("items: ", newOrganization);
+			response.put("items: ", newUser);
 			response.put("totalResults", "1");
 			response.put("status", "ok");
-			response.put("mesagge", "La Organización ha sido creada con Exito.");
+			response.put("mesagge", "El Usuario ha sido creado con Exito.");
+			response.put("token", "token"+newUser.getEmail()+newUser.getPhone());
 			
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 		} 
@@ -88,18 +121,18 @@ public class UserRestcontroller {
 		@DeleteMapping("/delete")
 		  public ResponseEntity<Map<String, Object>> deleteOrg(@RequestParam(value="token",required = true) String token) {
 			Map<String, Object> response = new HashMap<>();
-			Organization searchedByTokenOrg = organizationService.findByToken(token);
-			if (searchedByTokenOrg != null) {
+			User searchedByTokenUser = userService.findByToken(token);
+			if (searchedByTokenUser != null) {
 				
-				searchedByTokenOrg.setActive(false);
-				organizationService.delete(searchedByTokenOrg);
+				searchedByTokenUser.setActive(false);
+				userService.delete(searchedByTokenUser);
 				
 				response.put("totalResults", "1");
 				response.put("status", "ok");
-				response.put("message","La Organización "+searchedByTokenOrg.getName()+" ha sido desactivada/borrada");
+				response.put("message","El Usuario "+searchedByTokenUser.getName()+" ha sido desactivado/borrado");
 				
 			}else{
-				response.put("mensaje", "La Organizacion que intenta borrar/desactivar no existe.");
+				response.put("mensaje", "El Usuario que intenta borrar/desactivar no existe.");
 				response.put("status", "error");
 				response.put("code", "404");
 			}
@@ -112,28 +145,28 @@ public class UserRestcontroller {
 		
 		@PutMapping("/update")
 		public ResponseEntity<Map<String, Object>> update(	@RequestParam(value="token",required = true) String token, 
-															@RequestBody @Valid OrganizationDto orgDto){
+															@RequestBody @Valid UserDTO userDTO){
 			Map<String, Object> response = new HashMap<>();
 			
-			Organization updateOrg = organizationService.findByToken(token);
+			User updateUser = userService.findByToken(token);
 			
-			if (updateOrg!=null) {
+			if (updateUser!=null) {
 				
-				OrganizationDto newUpdateOrg = organizationService.update(orgDto,token);
+				UserDTO newUpdateUser = userService.update(userDTO,token);
 				
 				//OrganizationDto newOrganization = organizationService.save(orgDTO);
 				//OrganizationDto updateOrg = organizationService.update(orgDto);
-				response.put("Organizacion: ", newUpdateOrg);
+				response.put("Usuario: ", newUpdateUser);
 				response.put("totalResults", "1");
 				response.put("status", "ok");
-				//response.put("message","La Organización "+newUpdateOrg.getName()+" ha sido actualizada.");
+				//response.put("message","El Usuario "+newUpdateUser.getName()+" ha sido actualizado.");
 			}else {
 				response.put("token: ", token);
-				response.put("updateOrg: ", updateOrg);
-				response.put("mensaje", "No se pudo actualizar la informacion de la organizacion.");
+				response.put("updateOrg: ", updateUser);
+				response.put("mensaje", "No se pudo actualizar la informacion del Usuario.");
 			}
 			
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 		}
-		*/
+		
 }

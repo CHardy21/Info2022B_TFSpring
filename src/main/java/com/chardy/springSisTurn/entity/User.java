@@ -2,14 +2,17 @@ package com.chardy.springSisTurn.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -43,8 +46,6 @@ public class User implements Serializable{
 	private Long phone;
 	
 	@Column(name="user_email", unique=true)
-	@Email
-	@NotBlank(message = "Debe ingresar un email válido.")
 	private String email;
 	
 	@Column(name="user_create_date")
@@ -57,10 +58,15 @@ public class User implements Serializable{
 	@Column(name="user_token")
 	private String token;
 	
-	/*
+	//@OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    //private List<Turn> turns;
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "user_id")
 	private Set<Turn> turns;
-	*/
+
+	//@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	//@JoinColumn(name = "organizations_id")
+	//private Set<Event> events;
 	
 }

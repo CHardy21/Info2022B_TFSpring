@@ -34,11 +34,11 @@ public class SwaggerConfig {
 	
 	private ApiInfo getApiInfo() {
 		return new ApiInfo(
-				"API Turnos - Eventos",
-				"Permite crear eventos únicos o recurrentes desde una organización o sacar turnos como usuario",
+				"API - Sistema de Turnos - Informatorio 2022 B",
+				"Permite crear eventos únicos o recurrentes desde una organización y sacar turnos como usuario",
 				"1.0",
-				"http://codmind.com/terms",
-				new springfox.documentation.service.Contact("Codmind", "https://codmind.com", "apis@codmind.com"),
+				"http://chardy.com/terms",
+				new springfox.documentation.service.Contact("CHardy E", "https://github.com/CHardy21/Info2022B_TFSpringt", "christianrh2000@hotmail.com"),
 				"LICENSE",
 				"LICENSE URL",
 				Collections.emptyList()

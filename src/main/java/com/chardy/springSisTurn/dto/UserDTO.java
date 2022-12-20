@@ -28,11 +28,11 @@ public class UserDTO {
 	@Size(min = 7,  max= 8, message = "Debe cargar todos los digitos de su DNI (sin puntos).")
 	private String dni;
 
-	@NotBlank(message = "El número de telefono no puede ser nulo.")
+	//@NotEmpty(message = "El número de telefono no puede estar vacio.")
 	private Long phone;
 	
-	@Email
-	@NotBlank(message = "Debe ingresar un email válido.")
+	@Email(message = "Debe ingresar un email válido.")
+	@NotBlank(message = "El campo Email no puede estar vacio.")
 	private String email;
 
 }

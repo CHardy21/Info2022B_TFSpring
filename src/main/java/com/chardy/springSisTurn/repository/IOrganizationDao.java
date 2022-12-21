@@ -29,6 +29,9 @@ public interface IOrganizationDao extends JpaRepository<Organization, Long> {
 	@Query("select u from organizations u where u.token = ?1")
 	public Organization findByToken(String token);
 	
+
+	
+	
 	//public OrganizationDto save(OrganizationDto organizationDto);
 	
 	//public Organization save(Organization organization);

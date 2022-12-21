@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-12-2022 a las 15:38:51
--- Versión del servidor: 10.4.22-MariaDB
--- Versión de PHP: 7.4.26
+-- Tiempo de generación: 21-12-2022 a las 08:00:48
+-- Versión del servidor: 10.4.24-MariaDB
+-- Versión de PHP: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -37,8 +37,16 @@ CREATE TABLE `events` (
   `event_location` varchar(30) DEFAULT NULL,
   `event_name` varchar(30) DEFAULT NULL,
   `event_type` bit(1) NOT NULL,
-  `organizations_id` bigint(20) DEFAULT NULL
+  `organizations_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `events`
+--
+
+INSERT INTO `events` (`id`, `event_active`, `event_create_date`, `event_date_finish`, `event_date_init`, `event_location`, `event_name`, `event_type`, `organizations_id`) VALUES(1, 1, '2022-12-20 17:36:49', NULL, '2023-01-02 12:00:00', 'Ameghino 2197', 'Reparaciones Varias de Zapatos', b'1', 3);
+INSERT INTO `events` (`id`, `event_active`, `event_create_date`, `event_date_finish`, `event_date_init`, `event_location`, `event_name`, `event_type`, `organizations_id`) VALUES(2, 1, '2022-12-20 23:45:41', '2022-12-25 10:00:00', '2022-12-25 01:00:00', 'Ruta 16 km 17', 'Festejamos la Navidad con AH', b'0', 4);
+INSERT INTO `events` (`id`, `event_active`, `event_create_date`, `event_date_finish`, `event_date_init`, `event_location`, `event_name`, `event_type`, `organizations_id`) VALUES(3, 1, '2022-12-20 23:49:49', '2023-01-30 00:00:00', '2022-12-26 08:00:00', 'Pasaje Algarrobo 985', 'Muebles a medida - Ofertas', b'1', 2);
 
 -- --------------------------------------------------------
 
@@ -68,7 +76,7 @@ INSERT INTO `organizations` (`id`, `org_active`, `org_address`, `org_create_date
 INSERT INTO `organizations` (`id`, `org_active`, `org_address`, `org_create_date`, `org_cuit`, `org_email`, `org_name`, `org_phone`, `org_token`) VALUES(3, 1, 'Los Sauces 587', '2022-12-14 12:41:26', '27111111111', 'elsapato@email.com', 'Zapateria de Elsa Pato', 3624556677, 'tokenparaelsapato212223242526');
 INSERT INTO `organizations` (`id`, `org_active`, `org_address`, `org_create_date`, `org_cuit`, `org_email`, `org_name`, `org_phone`, `org_token`) VALUES(4, 1, 'Los Sauces 587', '2022-12-14 12:41:26', '27111111111', 'andreshito@email.com', 'Andres Hito', 3624556677, 'tokenparaandreshito212223242526');
 INSERT INTO `organizations` (`id`, `org_active`, `org_address`, `org_create_date`, `org_cuit`, `org_email`, `org_name`, `org_phone`, `org_token`) VALUES(5, 0, 'Ameghino 2197', '2022-12-14 12:41:26', '27111111113', 'elsapatero@email.com', 'Zapateria de Elsa Patero', 3624556677, 'tokenparaelsapatero212223242526');
-INSERT INTO `organizations` (`id`, `org_active`, `org_address`, `org_create_date`, `org_cuit`, `org_email`, `org_name`, `org_phone`, `org_token`) VALUES(6, 1, 'Arturo Illia 1468', '2022-12-14 12:41:26', '23111111111', 'zapatero@email.com', 'Zapateria de Zapatos', 3624556678, 'tokenparaelsapato212223242526');
+INSERT INTO `organizations` (`id`, `org_active`, `org_address`, `org_create_date`, `org_cuit`, `org_email`, `org_name`, `org_phone`, `org_token`) VALUES(6, 1, 'Arturo Illia 1468', '2022-12-14 12:41:26', '23111111111', 'zapatero@email.com', 'Zapateria de Zapatos', 3624556678, 'tokenparaelsapato2122232425268');
 
 -- --------------------------------------------------------
 
@@ -120,8 +128,7 @@ INSERT INTO `users` (`id`, `user_active`, `user_create_date`, `user_dni`, `user_
 -- Indices de la tabla `events`
 --
 ALTER TABLE `events`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FKj7st5etosp5lga8cym80xd3n2` (`organizations_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `organizations`
@@ -155,7 +162,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `organizations`
@@ -178,12 +185,6 @@ ALTER TABLE `users`
 --
 -- Restricciones para tablas volcadas
 --
-
---
--- Filtros para la tabla `events`
---
-ALTER TABLE `events`
-  ADD CONSTRAINT `FKj7st5etosp5lga8cym80xd3n2` FOREIGN KEY (`organizations_id`) REFERENCES `organizations` (`id`);
 
 --
 -- Filtros para la tabla `turns`

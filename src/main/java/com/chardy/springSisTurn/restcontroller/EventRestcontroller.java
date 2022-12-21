@@ -6,12 +6,11 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +22,7 @@ import com.chardy.springSisTurn.entity.Event;
 import com.chardy.springSisTurn.entity.Organization;
 import com.chardy.springSisTurn.service.IEventService;
 import com.chardy.springSisTurn.wrapper.EventWrapper;
+
 
 @RequestMapping("/api/events")
 @RestController
@@ -36,6 +36,7 @@ public class EventRestcontroller {
 	
 	@GetMapping("/all")
 	public ResponseEntity<HashMap<String, Object>> todosLosEventos() {
+		
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		
 		List<Event> eventos = eventService.getAll();
@@ -45,9 +46,43 @@ public class EventRestcontroller {
 		return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
 	}
 	
-	
-	
+/*
 	// List All Events of an Organization
+	@GetMapping("/active/{cuit}")
+	public ResponseEntity<HashMap<String, Object>> todosLosEventosActivos(@PathVariable(value="cuit") String cuit) {
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		
+		Organization OrgEventos = eventService.findByCuit(cuit);
+		
+		if(OrgEventos != null) {
+						
+			List<Event> eventos = eventService.getAllEventsOrg( OrgEventos.getId());
+			
+			if(eventos != null) {
+				
+				response.put("status", "ok");
+				response.put("totalResults", eventos.size());
+				response.put("items", eventos);
+				return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+				
+			} else {
+				
+				response.put("status", "error");
+				response.put("code", "404");
+				response.put("mesagge", "No existen eventos creados para la Organización consultada.");
+				return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.NOT_FOUND);
+				
+			}
+		
+		} else {
+			response.put("status", "error");
+			response.put("code", "404");
+			response.put("mesagge", "No existe Organización con el CUIT enviado.");
+			return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.NOT_FOUND);
+			
+		}
+	}
+	*/
 	
 	// Add Event
 	@PostMapping("/add")

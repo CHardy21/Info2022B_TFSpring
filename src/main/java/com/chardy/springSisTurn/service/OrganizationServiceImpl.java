@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.chardy.springSisTurn.dto.OrganizationDto;
+import com.chardy.springSisTurn.entity.Event;
 import com.chardy.springSisTurn.entity.Organization;
 import com.chardy.springSisTurn.repository.IOrganizationDao;
 import com.chardy.springSisTurn.wrapper.OrganizationWrapper;
@@ -26,7 +27,12 @@ public class OrganizationServiceImpl implements IOrganizationService{
 	public List<Organization> getAllActive() {
 		return organizationDao.findByActive();
 	}
-	
+	/*
+	@Override
+	public List<Event> findAllEvents(Long id) {
+		return organizationDao.findAllEvents(id);
+	}
+	*/
 	@Override
 	public Organization findByCuit(String cuit) {
 		return organizationDao.findByCuit(cuit);
@@ -98,6 +104,9 @@ public class OrganizationServiceImpl implements IOrganizationService{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
 
 
 

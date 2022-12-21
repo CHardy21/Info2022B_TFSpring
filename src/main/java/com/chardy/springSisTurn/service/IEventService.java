@@ -10,13 +10,13 @@ public interface IEventService {
 	
 	public List<Event> getAll();
 	public List<Event> getAllActive();
-	public Organization findByCuit(String cuit);
-	
-	public Organization findByToken(String token);
+	//public List<Event> getAllEventsOrg(Long id);
 	
 	public EventDTO save(EventDTO eventDTO);
 	public EventDTO save(Event event);
 	
 	
+	public Organization findByCuit(String cuit);
+	public Organization findByToken(String token);	
 	
 }

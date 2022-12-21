@@ -8,6 +8,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -71,6 +74,8 @@ public class Organization implements Serializable{
 	@Column(name="org_token")
 	private String token;
 	
+	//@JsonIgnore
+	//@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "organizations_id")
 	private Set<Event> events;

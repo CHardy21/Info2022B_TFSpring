@@ -27,15 +27,22 @@ public class EventServiceImpl implements IEventService{
 	public List<Event> getAllActive() {
 		return eventDAO.findByActive();
 	}
+	/*
 	@Override
-	public Organization findByCuit(String cuit) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Event> getAllEventsOrg(Long id) {
+		return eventDAO.findAllEventsOrg(id);
+	}
+*/
+	@Override
+	public Organization findByCuit(String cuit) { 
+		return eventDAO.findByCuit(cuit);
 	}
 	@Override
 	public Organization findByToken(String tokenOrg) {
 		return eventDAO.findByToken(tokenOrg);
 	}
+	
+	
 	@Override
 	public EventDTO save(EventDTO eventDTO) {
 		
@@ -58,7 +65,6 @@ public class EventServiceImpl implements IEventService{
 		
 		return eventDTO;
 	}
-
 
 
 

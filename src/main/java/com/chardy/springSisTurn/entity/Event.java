@@ -7,6 +7,9 @@ import java.util.Set;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +18,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.ForeignKey;
@@ -61,7 +63,9 @@ public class Event implements Serializable{
 	@Column(name="event_create_date", updatable = false)
 	@CreationTimestamp
     private LocalDateTime creationDate; 
-		
+	
+	//@JsonIgnore
+	//@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "events_id")
 	private Set<Turn> turns;
@@ -73,12 +77,14 @@ public class Event implements Serializable{
 	//private Organization organization;
 	// organization_id se agrega a la tabla por relacion en Organization entity
 
+	//@JsonIgnore
+	//@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(	foreignKey = @ForeignKey(name = "fk_events_organizations_id"), 
-					name="organizations_id", 
-					referencedColumnName = "id", 
-					columnDefinition = "int"
-				  )
+    //@JoinColumn(	foreignKey = @ForeignKey(name = "fk_events_organizations_id"), 
+	//				name="organizations_id", 
+	//				referencedColumnName = "id", 
+	//				columnDefinition = "int"
+	//			  )
     private Organization organization;
 
 }

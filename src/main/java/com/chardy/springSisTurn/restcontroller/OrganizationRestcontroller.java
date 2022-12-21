@@ -97,7 +97,7 @@ public class OrganizationRestcontroller {
 		
 		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 	}
-	
+		
 	// Register New Organization.
 	
 	@PostMapping("/add")

@@ -1,6 +1,7 @@
 package com.chardy.springSisTurn.restcontroller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +40,17 @@ public class TurnRestcontroller {
 	private ITurnService turnService;
 	
 	// list all turns
+	@GetMapping("/all")
+	public ResponseEntity<HashMap<String, Object>> todosLosTurnos() {
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		
+		List<Turn> turnos = turnService.getAll();
+		response.put("items", turnos);
+		response.put("totalResults", turnos.size());
+		response.put("status", "ok");
+		return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+	}
 	
 	// List Turns for Organization
 	
@@ -69,7 +82,7 @@ public class TurnRestcontroller {
 				
 				log.info("nuevoTurno: "+ nuevoTurno.toString());
 				
-				//EventDTO newEventDTO = eventService.save(newEvent);
+				TurnDTO newTurnDTO = turnService.save(nuevoTurno);
 				
 				response.put("items: ", nuevoTurno);
 				response.put("totalResults", "1");

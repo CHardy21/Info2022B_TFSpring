@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +54,25 @@ public class TurnRestcontroller {
 	}
 	
 	// List Turns for Organization
+	@GetMapping("/active/{cuit}")
+	public ResponseEntity<HashMap<String, Object>> todosLosTurnosActivosPorOrganizacion(
+			@PathVariable(name = "cuit") String cuit
+			) {
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		
+		Organization turnosOrg = turnService.findByCuit(cuit);
+		
+		Long turnIdOrg = turnosOrg.getId();
+		
+		//List<Turn> turnos = turnService.finAllByIdOrg(turnIdOrg);
+		
+		//response.put("items", turnos);
+		//response.put("totalResults", turnos.size());
+		response.put("status", "ok"+turnIdOrg);
+		return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+	}
+	
 	
 	//List Turns for Event
 	
@@ -71,6 +91,7 @@ public class TurnRestcontroller {
 			if(eventTurn != null) {
 			
 				Turn nuevoTurno = TurnWrapper.dtoToEntity(turnDTO);
+				nuevoTurno.setEvent(eventTurn);
 				
 				nuevoTurno.setUser(turnAuthUser);
 				nuevoTurno.setActive(true);
@@ -84,7 +105,7 @@ public class TurnRestcontroller {
 				
 				TurnDTO newTurnDTO = turnService.save(nuevoTurno);
 				
-				response.put("items: ", nuevoTurno);
+				response.put("items: ", newTurnDTO);
 				response.put("totalResults", "1");
 				response.put("status", "ok");
 				response.put("mesagge", "El Turno ha sido creado Correctamente.");

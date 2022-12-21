@@ -12,10 +12,21 @@ public class TurnWrapper {
 		Turn entity = new Turn();
 		entity.setNameEvent(dto.getNameEvent());
 		entity.setDateTurn(dto.getDateTurn());
-		entity.setIdEvent(dto.getIdEvent());
-
-		
+				
 		return entity;
 	}
 
+	public static TurnDTO entityToDto(Turn entity) {
+		// poner solo lo que queremos mostrar
+		// en principio tiene los mismos campos q el dto
+		
+		if(entity == null) return new TurnDTO();
+		
+		TurnDTO dto = new TurnDTO();
+		dto.setNameEvent(entity.getNameEvent());
+		dto.setDateTurn(entity.getDateTurn());
+		
+		return dto;
+	}
+	
 }

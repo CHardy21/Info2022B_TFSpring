@@ -5,13 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.chardy.springSisTurn.dto.EventDTO;
 import com.chardy.springSisTurn.dto.TurnDTO;
 import com.chardy.springSisTurn.entity.Event;
+import com.chardy.springSisTurn.entity.Organization;
 import com.chardy.springSisTurn.entity.Turn;
 import com.chardy.springSisTurn.entity.User;
 import com.chardy.springSisTurn.repository.ITurnDAO;
-import com.chardy.springSisTurn.wrapper.EventWrapper;
 import com.chardy.springSisTurn.wrapper.TurnWrapper;
 
 @Service
@@ -60,5 +59,12 @@ public class TurnServiceImpl implements ITurnService{
 		
 		return turnDTO;
 	}
+
+	@Override
+	public Organization findByCuit(String cuit) {
+		return turnDAO.findByCuit(cuit);
+	}
+
+	
 
 }

@@ -35,10 +35,11 @@ public class SwaggerConfig {
 	private ApiInfo getApiInfo() {
 		return new ApiInfo(
 				"API - Sistema de Turnos - Informatorio 2022 B",
-				"Permite crear eventos únicos o recurrentes desde una organización y sacar turnos como usuario",
+				"La API permite crear eventos únicos o recurrentes desde una organización (Empresa o Persona Física). Las personas o usuarios previo registro pueden sacar turnos a cualquier evento creado.",
+				
 				"1.0",
 				"http://chardy.com/terms",
-				new springfox.documentation.service.Contact("CHardy E", "https://github.com/CHardy21/Info2022B_TFSpringt", "christianrh2000@hotmail.com"),
+				new springfox.documentation.service.Contact("CHardy E", "https://github.com/CHardy21/Info2022B_TFSpring", "christianrh2000@hotmail.com"),
 				"LICENSE",
 				"LICENSE URL",
 				Collections.emptyList()

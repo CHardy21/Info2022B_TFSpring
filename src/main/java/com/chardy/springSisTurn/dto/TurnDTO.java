@@ -2,7 +2,6 @@ package com.chardy.springSisTurn.dto;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 

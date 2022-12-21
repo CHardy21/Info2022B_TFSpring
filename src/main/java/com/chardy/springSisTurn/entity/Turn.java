@@ -38,8 +38,6 @@ public class Turn implements Serializable{
 	@Column(name="turn_event_name")
 	private String nameEvent;
 	
-	private Long idEvent;
-	
 	@Column(name="turn_code",unique=true, nullable = false)
 	private String code = cadenaAleatoria(20);
 	
@@ -58,6 +56,10 @@ public class Turn implements Serializable{
 	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
 	private User user;
+	
+	@JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
+	private Event event;
 	
 	
     public static String cadenaAleatoria(int longitud) {

@@ -49,8 +49,8 @@ public class Event implements Serializable{
 	@Column(name="event_type",  nullable = false)
 	private Boolean type;	 // 0 = Evento unico | 1 = evento recurrente
 	
-	@Column(name="event_date_init", nullable = false) //
-	//@DateTimeFormat(pattern="dd-MM-yyyy HH:mm")  //@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX") Date myDate 
+	@Column(name="event_date_init", nullable = false)
+	@DateTimeFormat(pattern="dd-MM-yyyy HH:mm")
 	private LocalDateTime dateInit; 
 		
 	@Column(name="event_date_finish")
@@ -70,21 +70,8 @@ public class Event implements Serializable{
 	@JoinColumn(name = "events_id")
 	private Set<Turn> turns;
 	
-	
-	//@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	//@JoinTable(name="organizations")
-	//@JoinColumn(name = "organizations_id")
-	//private Organization organization;
-	// organization_id se agrega a la tabla por relacion en Organization entity
-
-	//@JsonIgnore
-	//@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	@JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
-    //@JoinColumn(	foreignKey = @ForeignKey(name = "fk_events_organizations_id"), 
-	//				name="organizations_id", 
-	//				referencedColumnName = "id", 
-	//				columnDefinition = "int"
-	//			  )
     private Organization organization;
 
 }

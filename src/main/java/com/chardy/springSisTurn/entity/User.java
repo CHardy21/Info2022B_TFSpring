@@ -58,15 +58,10 @@ public class User implements Serializable{
 	@Column(name="user_token")
 	private String token;
 	
-	//@OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    //private List<Turn> turns;
-	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "user_id")
 	private Set<Turn> turns;
 
-	//@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	//@JoinColumn(name = "organizations_id")
-	//private Set<Event> events;
+
 	
 }

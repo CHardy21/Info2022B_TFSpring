@@ -26,9 +26,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 
-@Data
-@AllArgsConstructor @NoArgsConstructor
-@ToString
+//@Data
+//@AllArgsConstructor @NoArgsConstructor
+//@ToString
 
 @Entity(name="organizations")
 public class Organization implements Serializable{
@@ -40,13 +40,6 @@ public class Organization implements Serializable{
 	@Column(nullable=false, unique = true)
 	private Long id;
 
-	//@ManyToOne
-    //@Column(name = "user_id")
-    //private User userOrganization;
-	
-	//@Column(name="org_type")
-	//private Boolean orgType;   // true = empresa | false= unipersonal
-	
 	@Column(name="org_name", length =30, unique = true)
 	private String name;
 	
@@ -77,9 +70,111 @@ public class Organization implements Serializable{
 	//@JsonIgnore
 	//@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	@JoinColumn(name = "organizations_id")
+	@JoinColumn(name = "organization_id")
 	private Set<Event> events;
+
+	public Organization() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Organization(Long id, String name, String cuit, String address, Long phone,
+			@Email @NotBlank(message = "Debe ingresar un email.") String email, Boolean active,
+			LocalDateTime createDate, String token, Set<Event> events) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.cuit = cuit;
+		this.address = address;
+		this.phone = phone;
+		this.email = email;
+		this.active = active;
+		this.createDate = createDate;
+		this.token = token;
+		this.events = events;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getCuit() {
+		return cuit;
+	}
+
+	public void setCuit(String cuit) {
+		this.cuit = cuit;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Long getPhone() {
+		return phone;
+	}
+
+	public void setPhone(Long phone) {
+		this.phone = phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+	public LocalDateTime getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(LocalDateTime createDate) {
+		this.createDate = createDate;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public Set<Event> getEvents() {
+		return events;
+	}
+
+	public void setEvents(Set<Event> events) {
+		this.events = events;
+	}
 	
-	//@OneToMany(mappedBy = "autor", cascade=CascadeType.ALL, orphanRemoval = true)
-    //private Set<Libro> libro = new HashSet<Libro>();
+	
+	
+	
 }

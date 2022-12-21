@@ -3,6 +3,7 @@ package com.chardy.springSisTurn.restcontroller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -46,7 +47,7 @@ public class EventRestcontroller {
 		return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
 	}
 	
-/*
+
 	// List All Events of an Organization
 	@GetMapping("/active/{cuit}")
 	public ResponseEntity<HashMap<String, Object>> todosLosEventosActivos(@PathVariable(value="cuit") String cuit) {
@@ -56,7 +57,8 @@ public class EventRestcontroller {
 		
 		if(OrgEventos != null) {
 						
-			List<Event> eventos = eventService.getAllEventsOrg( OrgEventos.getId());
+			//List<Event> eventos = eventService.getAllEventsOrg( OrgEventos.getId());
+			Set<Event> eventos = OrgEventos.getEvents();
 			
 			if(eventos != null) {
 				
@@ -82,7 +84,7 @@ public class EventRestcontroller {
 			
 		}
 	}
-	*/
+	
 	
 	// Add Event
 	@PostMapping("/add")

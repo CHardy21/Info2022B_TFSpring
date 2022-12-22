@@ -101,8 +101,16 @@ public class OrganizationServiceImpl implements IOrganizationService{
 
 	@Override
 	public Organization save(Organization organization) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		//Organization org = OrganizationWrapper.dtoToEntity(organization);
+		
+		// Code to generate token
+		organization.setActive(true);
+		organization.setToken("token"+organization.getName()+organization.getEmail());
+		
+		organization = organizationDao.save(organization);
+		
+		return organization;
 	}
 
 

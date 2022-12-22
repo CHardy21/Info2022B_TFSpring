@@ -104,14 +104,18 @@ public class OrganizationRestcontroller {
 	public ResponseEntity<Map<String, Object>> nuevaOrganizacion(@RequestBody @Valid OrganizationDto orgDTO){
 		
 		//log.info("Organization: "+organizationDto.toString());
-		
 		Map<String, Object> response = new HashMap<>();
-		OrganizationDto newOrganization = organizationService.save(orgDTO);
 		
-		response.put("items: ", newOrganization);
+		Organization organization = OrganizationWrapper.dtoToEntity(orgDTO);		
+		Organization newOrganization = organizationService.save(organization);
+
+		OrganizationDto newOrgDTO = OrganizationWrapper.entityToDto(newOrganization);
+		
+		response.put("data: ", newOrgDTO);
 		response.put("totalResults", "1");
 		response.put("status", "ok");
 		response.put("mesagge", "La Organización ha sido creada con Exito.");
+		response.put("token",newOrganization.getToken());
 		
 		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 	} 

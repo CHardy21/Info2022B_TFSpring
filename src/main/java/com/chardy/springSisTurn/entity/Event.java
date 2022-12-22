@@ -60,7 +60,7 @@ public class Event implements Serializable{
 	@CreationTimestamp
     private LocalDateTime creationDate; 
 	
-	//@JsonIgnore
+	@JsonIgnore
 	//@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name = "event_id")

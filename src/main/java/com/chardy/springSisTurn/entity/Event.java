@@ -18,9 +18,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+//import lombok.AllArgsConstructor;
+//import lombok.Data;
+//import lombok.NoArgsConstructor;
 
 
 //@Data
@@ -168,6 +168,13 @@ public class Event implements Serializable{
 
 	public void setOrganization(Organization organization) {
 		this.organization = organization;
+	}
+
+	@Override
+	public String toString() {
+		return "Event [id=" + id + ", name=" + name + ", location=" + location + ", type=" + type + ", dateInit="
+				+ dateInit + ", dateFin=" + dateFin + ", active=" + active + ", creationDate=" + creationDate
+				+ ", turns=" + turns + ", organization=" + organization + "]";
 	}
 
 	

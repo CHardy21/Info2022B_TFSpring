@@ -1,6 +1,7 @@
 package com.chardy.springSisTurn.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,12 +28,8 @@ public class EventServiceImpl implements IEventService{
 	public List<Event> getAllActive() {
 		return eventDAO.findByActive();
 	}
-	/*
-	@Override
-	public List<Event> getAllEventsOrg(Long id) {
-		return eventDAO.findAllEventsOrg(id);
-	}
-*/
+
+
 	@Override
 	public Organization findByCuit(String cuit) { 
 		return eventDAO.findByCuit(cuit);
@@ -66,7 +63,19 @@ public class EventServiceImpl implements IEventService{
 		return eventDTO;
 	}
 
+	@Override
+	public Optional<Event> findById(Long id) {
+		return eventDAO.findById(id);
+	}
 
+	@Override
+	public Event delete(Long id) {
+		Event eventDeleted = eventDAO.getById(id);
+		eventDAO.delete(id);
+		
+		return eventDeleted;
+		
+	}
 
 
 }

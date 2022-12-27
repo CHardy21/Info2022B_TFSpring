@@ -17,18 +17,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.chardy.springSisTurn.dto.EventDTO;
 import com.chardy.springSisTurn.dto.TurnDTO;
 import com.chardy.springSisTurn.entity.Event;
 import com.chardy.springSisTurn.entity.Organization;
 import com.chardy.springSisTurn.entity.Turn;
 import com.chardy.springSisTurn.entity.User;
-import com.chardy.springSisTurn.service.IEventService;
 import com.chardy.springSisTurn.service.ITurnService;
-import com.chardy.springSisTurn.wrapper.EventWrapper;
 import com.chardy.springSisTurn.wrapper.TurnWrapper;
 
 @RequestMapping("/api/turns")

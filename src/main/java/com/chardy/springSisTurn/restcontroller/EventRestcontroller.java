@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chardy.springSisTurn.dto.EventDTO;
+import com.chardy.springSisTurn.dto.OrganizationDto;
 import com.chardy.springSisTurn.entity.Event;
 import com.chardy.springSisTurn.entity.Organization;
 import com.chardy.springSisTurn.service.IEventService;
@@ -135,7 +137,8 @@ public class EventRestcontroller {
 	
 	// Delete Event
 	@DeleteMapping("/delete/{id}")
-	  public ResponseEntity<Map<String, Object>> deleteOrg(	@RequestParam(value="token",required = true) String token,
+	  public ResponseEntity<Map<String, Object>> borrarEventoDeLaOrganizacion(
+			  												@RequestParam(value="token",required = true) String token,
 			  												@PathVariable(value="id") Long id) {
 		Map<String, Object> response = new HashMap<>();
 		
@@ -168,6 +171,7 @@ public class EventRestcontroller {
 			
 	
 		} 
+		
 			response.put("status", "error");
 			response.put("code", "404");
 			response.put("mesagge", "El evento no existe.");
@@ -176,6 +180,26 @@ public class EventRestcontroller {
 	
 	
 	// Update Event
+	@PutMapping("/update/{id}")
+	public ResponseEntity<Map<String, Object>> actualizarEvento(	
+			@RequestParam(value="token",required = true) String token, 
+			@PathVariable(value="id") Long id,
+			@RequestBody @Valid EventDTO eventDto){
+		
+		Map<String, Object> response = new HashMap<>();
+		
+		Optional<Event> optinalEntity =  eventService.findById(id);
+		Event eventUpdate = optinalEntity.get();
+		
+		log.info("eventDelete: "+ eventUpdate.toString());
+		
+		
+			response.put("token: ", token);
+			response.put("updateOrg: ", eventUpdate);
+			response.put("mensaje", "No se pudo actualizar la informacion de la organizacion.");
 	
+		
+		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+	}
 
 }

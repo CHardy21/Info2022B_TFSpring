@@ -184,7 +184,7 @@ public class EventRestcontroller {
 	public ResponseEntity<Map<String, Object>> actualizarEvento(	
 			@RequestParam(value="token",required = true) String token, 
 			@PathVariable(value="id") Long id,
-			@RequestBody @Valid EventDTO eventDto){
+			@RequestBody @Valid EventDTO eventDTO){
 		
 		Map<String, Object> response = new HashMap<>();
 		
@@ -193,9 +193,16 @@ public class EventRestcontroller {
 		
 		log.info("eventDelete: "+ eventUpdate.toString());
 		
+		if(eventUpdate != null) {
+			response.put("msg", "evento encontrado");
+			} else {
+				response.put("msg", "evento NO encontrado");
+			}
+		
 		
 			response.put("token: ", token);
-			response.put("updateOrg: ", eventUpdate);
+			response.put("eventDTO: ", eventDTO);
+			response.put("eventUpdate: ", eventUpdate);
 			response.put("mensaje", "No se pudo actualizar la informacion de la organizacion.");
 	
 		

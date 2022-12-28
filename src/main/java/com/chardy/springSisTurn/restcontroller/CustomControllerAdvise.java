@@ -6,7 +6,10 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.tool.schema.spi.CommandAcceptanceException;
 import org.slf4j.Logger;
@@ -27,10 +30,11 @@ public class CustomControllerAdvise extends ResponseEntityExceptionHandler {
 private static final Logger log = LoggerFactory.getLogger(RestControllerAdvice.class);
 	
 	@Override
-	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(	MethodArgumentNotValidException ex,
 																	HttpHeaders headers, 
 																	HttpStatus status,
-																	WebRequest request) {
+																	WebRequest request
+																) {
 
 		Map<String, Object> body = new LinkedHashMap<>();
 		//body.put("timestamp", new Date());
@@ -41,17 +45,18 @@ private static final Logger log = LoggerFactory.getLogger(RestControllerAdvice.c
 		List<String> errors = ex.getBindingResult()
 				.getFieldErrors()
 				.stream()
-				.map(x -> x.getDefaultMessage())
+				.map(x -> x.getField()+": "+x.getDefaultMessage())
 				.collect(Collectors.toList());
-		
 		body.put("message", errors);
+		
 		return new ResponseEntity<>(body, headers, status);
 	}	
 	
 	
-	@ExceptionHandler(ArithmeticException.class)
-	public ResponseEntity<Object> handleArithmeticException(ArithmeticException ex) {
-		log.info("capturando");
+	@ExceptionHandler(NoSuchElementException.class)
+	public ResponseEntity<Object> NoSuchElementException(NoSuchElementException ex) {
+		//log.info("capturando");
+		
 		Map<String, Object> body = new HashMap<>();
 		body.put("timestamp", new Date());
 		body.put("status", HttpStatus.INTERNAL_SERVER_ERROR);

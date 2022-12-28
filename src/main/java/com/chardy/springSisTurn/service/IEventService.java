@@ -18,6 +18,7 @@ public interface IEventService {
 	
 	public EventDTO save(EventDTO eventDTO);
 	public EventDTO save(Event event);
+	public EventDTO update(EventDTO event, Long id);
 	
 	
 	public Organization findByCuit(String cuit);

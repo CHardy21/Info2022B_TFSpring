@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chardy.springSisTurn.dto.EventDTO;
-import com.chardy.springSisTurn.dto.OrganizationDto;
 import com.chardy.springSisTurn.entity.Event;
 import com.chardy.springSisTurn.entity.Organization;
 import com.chardy.springSisTurn.service.IEventService;
@@ -187,26 +186,34 @@ public class EventRestcontroller {
 			@RequestBody @Valid EventDTO eventDTO){
 		
 		Map<String, Object> response = new HashMap<>();
+		HttpStatus responseStatus;
 		
 		Optional<Event> optinalEntity =  eventService.findById(id);
 		Event eventUpdate = optinalEntity.get();
+		Organization eventOrg = eventService.findByToken(token);
 		
 		log.info("eventDelete: "+ eventUpdate.toString());
 		
-		if(eventUpdate != null) {
-			response.put("msg", "evento encontrado");
-			} else {
-				response.put("msg", "evento NO encontrado");
-			}
 		
-		
-			response.put("token: ", token);
-			response.put("eventDTO: ", eventDTO);
-			response.put("eventUpdate: ", eventUpdate);
-			response.put("mensaje", "No se pudo actualizar la informacion de la organizacion.");
-	
-		
-		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+		if(eventOrg.equals(eventUpdate.getOrganization())) {
+			
+			// La org es dueña del evento... ACTUALIZARLO
+			EventDTO newEventUpdate = eventService.update(eventDTO,id);
+			
+			response.put("data",newEventUpdate);
+			response.put("msg1", "evento y org encontrados");
+			responseStatus = HttpStatus.OK;
+					
+		}else {
+			// El token de la organizacion es invalido o no fue enviado
+			
+			response.put("status", "error");
+			response.put("code", "401");
+			response.put("mesagge", "No posee autorizacion para modificar el evento.");
+			responseStatus = HttpStatus.FORBIDDEN;
+		}
+			
+		return new ResponseEntity<Map<String,Object>>(response, responseStatus);
 	}
 
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import javax.management.OperationsException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.tool.schema.spi.CommandAcceptanceException;
@@ -37,7 +38,7 @@ private static final Logger log = LoggerFactory.getLogger(RestControllerAdvice.c
 																) {
 
 		Map<String, Object> body = new LinkedHashMap<>();
-		//body.put("timestamp", new Date());
+
 		body.put("status", "error");
 		body.put("code", status.value());
 		
@@ -55,19 +56,34 @@ private static final Logger log = LoggerFactory.getLogger(RestControllerAdvice.c
 	
 	@ExceptionHandler(NoSuchElementException.class)
 	public ResponseEntity<Object> NoSuchElementException(NoSuchElementException ex) {
-		//log.info("capturando");
-		
+
 		Map<String, Object> body = new HashMap<>();
-		body.put("timestamp", new Date());
-		body.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-		body.put("errors", ex.getMessage());
 		
-		return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+		body.put("status", "error");
+		body.put("code", HttpStatus.UNPROCESSABLE_ENTITY.value());
+		body.put("message", ex.getMessage());
+		
+		return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
 	}
+
+	@ExceptionHandler(NullPointerException.class)
+	public ResponseEntity<Object> NullPointerException(NullPointerException ex) {
+		
+		/* Esta exepcion ocurre cuando:
+		 * no existe org segun token enviado
+		 */
+		Map<String, Object> body = new HashMap<>();
+		
+		body.put("status", "error");
+		body.put("code", HttpStatus.UNPROCESSABLE_ENTITY.value());
+		body.put("message", ex.getMessage());
+		
+		return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+
 	
-	
-	@ExceptionHandler(NotFoundException.class)
-	public ResponseEntity<Object> handleNotFoundException (NotFoundException ex) {
+	@ExceptionHandler(OperationsException.class)
+	public ResponseEntity<Object> handleNotFoundException (OperationsException ex) {
 		Map<String, Object> body = new HashMap<>();
 		body.put("timestamp", new Date());
 		body.put("statusMessage", HttpStatus.NOT_FOUND);

@@ -76,6 +76,29 @@ public class EventServiceImpl implements IEventService{
 		return eventDeleted;
 		
 	}
-
+	@Override
+	public EventDTO update(EventDTO event, Long id) {
+		
+		Optional<Event> optinalEntity = eventDAO.findById(id);
+		Event existEvent = optinalEntity.get();
+		Event newUpdateEvent = EventWrapper.dtoToEntity(event);
+		
+		newUpdateEvent.setId(existEvent.getId());
+		newUpdateEvent.setActive(existEvent.getActive());
+		newUpdateEvent.setDateInit(existEvent.getDateInit());
+		
+		newUpdateEvent.setCreationDate(existEvent.getCreationDate());
+		newUpdateEvent.setTurns(existEvent.getTurns());
+		newUpdateEvent.setOrganization(existEvent.getOrganization());
+		
+		Event updateEvent = eventDAO.save(newUpdateEvent);
+		
+			if(updateEvent != null) {
+				EventDTO updateOrgDto = EventWrapper.entityToDto(updateEvent);
+			return updateOrgDto;
+		}
+		
+		return null;
+	}
 
 }

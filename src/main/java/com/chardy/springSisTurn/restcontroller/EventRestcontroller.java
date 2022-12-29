@@ -38,7 +38,7 @@ public class EventRestcontroller {
 	
 	@Autowired
 	private IEventService eventService;
-	
+	HttpStatus responseStatus;
 	
 	@GetMapping("/all")
 	public ResponseEntity<HashMap<String, Object>> todosLosEventos() {
@@ -49,7 +49,9 @@ public class EventRestcontroller {
 		response.put("data", eventos);
 		response.put("totalResults", eventos.size());
 		response.put("status", "ok");
-		return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+		responseStatus = HttpStatus.OK;
+		
+		return new ResponseEntity<HashMap<String, Object>>(response, responseStatus);
 	}
 	
 
@@ -62,32 +64,28 @@ public class EventRestcontroller {
 		
 		if(OrgEventos != null) {
 						
-			//List<Event> eventos = eventService.getAllEventsOrg( OrgEventos.getId());
 			Set<Event> eventos = OrgEventos.getEvents();
 			
 			if(eventos != null) {
-				
 				response.put("status", "ok");
 				response.put("totalResults", eventos.size());
 				response.put("data", eventos);
-				return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
-				
-			} else {
-				
+				responseStatus = HttpStatus.OK;
+				} else {
 				response.put("status", "error");
 				response.put("code", "404");
 				response.put("mesagge", "No existen eventos creados para la Organización consultada.");
-				return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.NOT_FOUND);
-				
-			}
+				responseStatus = HttpStatus.NOT_FOUND;
+				}
 		
 		} else {
 			response.put("status", "error");
 			response.put("code", "404");
 			response.put("mesagge", "No existe Organización con el CUIT enviado.");
-			return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.NOT_FOUND);
-			
+			responseStatus = HttpStatus.NOT_FOUND;
+						
 		}
+	return new ResponseEntity<HashMap<String, Object>>(response, responseStatus);
 	}
 	
 	
@@ -136,7 +134,7 @@ public class EventRestcontroller {
 	
 	// Delete Event
 	@DeleteMapping("/delete/{id}")
-	  public ResponseEntity<Map<String, Object>> borrarEventoDeLaOrganizacion(
+	 public ResponseEntity<Map<String, Object>> borrarEventoDeLaOrganizacion(
 			  												@RequestParam(value="token",required = true) String token,
 			  												@PathVariable(value="id") Long id) {
 		Map<String, Object> response = new HashMap<>();
@@ -192,7 +190,7 @@ public class EventRestcontroller {
 		Event eventUpdate = optinalEntity.get();
 		Organization eventOrg = eventService.findByToken(token);
 		
-		log.info("eventDelete: "+ eventUpdate.toString());
+		//log.info("eventDelete: "+ eventUpdate.toString());
 		
 		
 		if(eventOrg.equals(eventUpdate.getOrganization())) {
@@ -201,7 +199,7 @@ public class EventRestcontroller {
 			EventDTO newEventUpdate = eventService.update(eventDTO,id);
 			
 			response.put("data",newEventUpdate);
-			response.put("msg1", "evento y org encontrados");
+			response.put("status", "ok");
 			responseStatus = HttpStatus.OK;
 					
 		}else {

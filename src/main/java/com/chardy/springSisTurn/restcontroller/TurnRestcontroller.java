@@ -3,6 +3,7 @@ package com.chardy.springSisTurn.restcontroller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -35,6 +36,7 @@ public class TurnRestcontroller {
 	
 	@Autowired
 	private ITurnService turnService;
+	HttpStatus responseStatus;
 	
 	// list all turns
 	@GetMapping("/all")
@@ -51,13 +53,14 @@ public class TurnRestcontroller {
 	
 	// List Turns for Organization
 	@GetMapping("/active/{cuit}")
-	public ResponseEntity<HashMap<String, Object>> todosLosTurnosActivosPorOrganizacion(
+	public ResponseEntity<HashMap<String, Object>> todosLosTurnosPorOrganizacion(
 			@PathVariable(name = "cuit") String cuit
-			) {
+			){
 		
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		
-		Organization turnosOrg = turnService.findByCuit(cuit);
+		Organization turnosOrg = turnService.findByCuit(cuit); // busco la org por el cuit
+		
 		
 		Long turnIdOrg = turnosOrg.getId();
 		
@@ -65,12 +68,34 @@ public class TurnRestcontroller {
 		
 		//response.put("items", turnos);
 		//response.put("totalResults", turnos.size());
-		response.put("status", "ok"+turnIdOrg);
+		response.put("status", "ok " + turnIdOrg);
 		return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
 	}
 	
 	
 	//List Turns for Event
+	@GetMapping("/event/{id}")
+	public ResponseEntity<HashMap<String, Object>> todosLosTurnosPorEvento(
+			@PathVariable(name = "id") Long idEvent
+			){
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		
+		Event event = turnService.findEventById(idEvent);
+		Set<Turn> turnsEvent = event.getTurns();
+		
+		
+		response.put("status", "ok");
+		response.put("data", turnsEvent);
+		response.put("totalResults", turnsEvent.size());
+		response.put("event", event);
+		//response.put("turnsEvent", turnsEvent);
+		responseStatus= HttpStatus.OK;
+		
+		return new ResponseEntity<HashMap<String,Object>>(response, responseStatus);
+	}
+	
+	
 	
 	// Add Turn
 	@PostMapping("/add")
@@ -89,6 +114,7 @@ public class TurnRestcontroller {
 				Turn nuevoTurno = TurnWrapper.dtoToEntity(turnDTO);
 				nuevoTurno.setEvent(eventTurn);
 				
+				nuevoTurno.setNameEvent(turnAuthUser.getName());
 				nuevoTurno.setUser(turnAuthUser);
 				nuevoTurno.setActive(true);
 				if(eventTurn.getType()!= true) {
@@ -97,7 +123,7 @@ public class TurnRestcontroller {
 					nuevoTurno.setDateTurn(turnDTO.getDateTurn());
 				}
 				
-				log.info("nuevoTurno: "+ nuevoTurno.toString());
+				//log.info("nuevoTurno: "+ nuevoTurno.toString());
 				
 				TurnDTO newTurnDTO = turnService.save(nuevoTurno);
 				

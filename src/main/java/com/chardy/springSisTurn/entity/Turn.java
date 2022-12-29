@@ -23,8 +23,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-@Data
-@AllArgsConstructor @NoArgsConstructor
+//@Data
+//@AllArgsConstructor @NoArgsConstructor
 
 @Entity(name="turns")
 public class Turn implements Serializable{
@@ -75,6 +75,70 @@ public class Turn implements Serializable{
     public static int numeroAleatorioEnRango(int minimo, int maximo) {
         return ThreadLocalRandom.current().nextInt(minimo, maximo + 1);
     }
+	public Turn(Long id, String nameEvent, String code, @Future LocalDateTime dateTurn, Boolean active,
+			LocalDateTime createDate, User user, Event event) {
+		super();
+		this.id = id;
+		this.nameEvent = nameEvent;
+		this.code = code;
+		this.dateTurn = dateTurn;
+		this.active = active;
+		this.createDate = createDate;
+		this.user = user;
+		this.event = event;
+	}
+	public Turn() {
+		super();
+		// TODO Apéndice de constructor generado automáticamente
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getNameEvent() {
+		return nameEvent;
+	}
+	public void setNameEvent(String nameEvent) {
+		this.nameEvent = nameEvent;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public LocalDateTime getDateTurn() {
+		return dateTurn;
+	}
+	public void setDateTurn(LocalDateTime dateTurn) {
+		this.dateTurn = dateTurn;
+	}
+	public Boolean getActive() {
+		return active;
+	}
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+	public LocalDateTime getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(LocalDateTime createDate) {
+		this.createDate = createDate;
+	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public Event getEvent() {
+		return event;
+	}
+	public void setEvent(Event event) {
+		this.event = event;
+	}
 	
 	
 	

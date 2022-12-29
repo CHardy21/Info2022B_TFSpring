@@ -19,4 +19,8 @@ INSERT INTO `events` (`id`, `event_active`, `event_create_date`, `event_date_fin
 INSERT INTO `events` (`id`, `event_active`, `event_create_date`, `event_date_finish`, `event_date_init`, `event_location`, `event_name`, `event_type`, `organization_id`) VALUES(4, 1, '2022-12-21 11:31:18', NULL, '2023-01-01 02:00:00', 'Ruta 16 km 17', 'Festejamos el Año Nuevo', b'0', 4);
 
 INSERT INTO `turns` (`id`, `turn_active`, `turn_code`, `turn_create_date`, `turn_date`, `turn_event_name`, `event_id`, `user_id`) VALUES(1, b'1', 'WzRhCtaPXdPHxYskBZcC', '2022-12-21 16:27:35', '2022-12-25 01:00:00', 'Reparaciones Varias de Zapatos', 2, 5);
+INSERT INTO `turns` (`id`, `turn_active`, `turn_code`, `turn_create_date`, `turn_date`, `turn_event_name`, `event_id`, `user_id`) VALUES(2, b'1', 'XzEFAXHYszjIJWpiXEeN', '2022-12-29 08:28:44', '2023-01-01 02:00:00', 'año nuevo 2', 4, 1);
+INSERT INTO `turns` (`id`, `turn_active`, `turn_code`, `turn_create_date`, `turn_date`, `turn_event_name`, `event_id`, `user_id`) VALUES(3, b'1', 'WOYTuHMeuVkeKvxQAAvg', '2022-12-29 08:28:58', '2023-01-01 02:00:00', 'año nuevo 2', 4, 2);
+INSERT INTO `turns` (`id`, `turn_active`, `turn_code`, `turn_create_date`, `turn_date`, `turn_event_name`, `event_id`, `user_id`) VALUES(4, b'1', 'dZkQvsYMcKhGBpmxCYPw', '2022-12-29 08:29:14', '2023-01-01 02:00:00', 'año nuevo ', 4, 3);
+INSERT INTO `turns` (`id`, `turn_active`, `turn_code`, `turn_create_date`, `turn_date`, `turn_event_name`, `event_id`, `user_id`) VALUES(5, b'1', 'mefMIdDamshAfQfOeGeZ', '2022-12-29 08:30:05', '2023-01-01 02:00:00', 'año nuevo ', 4, 5);
 

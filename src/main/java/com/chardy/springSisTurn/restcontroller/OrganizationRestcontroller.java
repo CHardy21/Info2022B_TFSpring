@@ -158,12 +158,10 @@ public class OrganizationRestcontroller {
 			
 			OrganizationDto newUpdateOrg = organizationService.update(orgDto,token);
 			
-			//OrganizationDto newOrganization = organizationService.save(orgDTO);
-			//OrganizationDto updateOrg = organizationService.update(orgDto);
 			response.put("Organizacion: ", newUpdateOrg);
 			response.put("totalResults", "1");
 			response.put("status", "ok");
-			//response.put("message","La Organización "+newUpdateOrg.getName()+" ha sido actualizada.");
+			
 		}else {
 			response.put("token: ", token);
 			response.put("updateOrg: ", updateOrg);

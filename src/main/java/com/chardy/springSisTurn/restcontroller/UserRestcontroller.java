@@ -30,143 +30,146 @@ public class UserRestcontroller {
 
 	@Autowired
 	private IUserService userService;
+	HttpStatus responseStatus;
 	
 	// View all registered and active users
-	
 	@GetMapping("/active")
 	public ResponseEntity<HashMap<String, Object>> todosLosUsuariosActivos() {
 		HashMap<String, Object> response = new HashMap<String, Object>();
 			
 		List<User> user = userService.getAllActive();
-		response.put("items", user);
+		response.put("data", user);
 		response.put("status", "ok");
 		response.put("totalResults", user.size());
-		return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+		responseStatus=HttpStatus.OK;
+		
+		return new ResponseEntity<HashMap<String, Object>>(response, responseStatus);
 	}
 	
 	// View all users (active or not)
+	@GetMapping("/all")
+	public ResponseEntity<HashMap<String, Object>> todosLosUsuarios() {
 		
-		@GetMapping("/all")
-		public ResponseEntity<HashMap<String, Object>> todosLosUsuarios() {
-			HashMap<String, Object> response = new HashMap<String, Object>();
+		HashMap<String, Object> response = new HashMap<String, Object>();
 			
-			List<User> users = userService.getAll();
-			response.put("items", users);
-			response.put("totalResults", users.size());
-			response.put("status", "ok");
-			return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+		List<User> users = userService.getAll();
+		response.put("items", users);
+		response.put("totalResults", users.size());
+		response.put("status", "ok");
+		
+		return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
 		}
 		
 		
-		// Search User by DNI
+	// Search User by DNI
+	@GetMapping("/dni/{dni}")
+	public ResponseEntity<Map<String, Object>> findByName(@PathVariable(name = "dni") String dni){
+		Map<String, Object> response = new HashMap<>();
+		User searchedUser = userService.findByDni(dni);
 		
-		@GetMapping("/dni/{dni}")
-		public ResponseEntity<Map<String, Object>> findByName(@PathVariable(name = "dni") String dni){
-			Map<String, Object> response = new HashMap<>();
-			User searchedUser = userService.findByDni(dni);
-			if (searchedUser != null) {
-				response.put("items: ", UserWrapper.entityToDto(searchedUser));
-				response.put("totalResults", "1");
-				response.put("status", "ok");
-			}else{
-				response.put("message", "No existe ningun usuario con DNI: '"+ dni +"'.");
-				response.put("status", "error");
-				response.put("code", "404");
-			}
-			
-			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
-		}
-		
-		// Search User by LastName
-		
-		@GetMapping("/lastname/{lastname}")
-		public ResponseEntity<Map<String, Object>> findByLastName(@PathVariable(name = "lastname") String lastname){
-			Map<String, Object> response = new HashMap<>();
-			User searchedUser = userService.findByLastName(lastname);
-			if (searchedUser != null) {
-				response.put("items: ", UserWrapper.entityToDto(searchedUser));
-				response.put("totalResults", "1");
-				response.put("status", "ok");
-			}else{
-				response.put("message", "No existe ningun usuario con Apellido: '"+ lastname +"'.");
-				response.put("status", "error");
-				response.put("code", "404");
-			}
-			
-			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
-		}
-		
-		
-		// Register New User.
-		
-		@PostMapping("/add")
-		public ResponseEntity<Map<String, Object>> nuevaOrganizacion(@RequestBody @Valid UserDTO userDTO){
-			
-			//log.info("Organization: "+organizationDto.toString());
-			
-			Map<String, Object> response = new HashMap<>();
-			UserDTO newUser = userService.save(userDTO);
-			
-			response.put("items: ", newUser);
+		if (searchedUser != null) {
+			response.put("items: ", UserWrapper.entityToDto(searchedUser));
 			response.put("totalResults", "1");
 			response.put("status", "ok");
-			response.put("mesagge", "El Usuario ha sido creado con Exito.");
-			response.put("token", "token"+newUser.getEmail()+newUser.getPhone());
+			responseStatus=HttpStatus.OK;
+		}else{
+			response.put("message", "No existe ningun usuario con DNI: '"+ dni +"'.");
+			response.put("status", "error");
+			response.put("code", "404");
+			responseStatus=HttpStatus.NOT_FOUND;
+		}
 			
-			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
-		} 
+		return new ResponseEntity<Map<String,Object>>(response, responseStatus);
+	}
 		
-		// Delete User.
+	// Search User by LastName
+	@GetMapping("/lastname/{lastname}")
+	public ResponseEntity<Map<String, Object>> findByLastName(@PathVariable(name = "lastname") String lastname){
+		Map<String, Object> response = new HashMap<>();
+		User searchedUser = userService.findByLastName(lastname);
+
+		if (searchedUser != null) {
+			response.put("items: ", UserWrapper.entityToDto(searchedUser));
+			response.put("totalResults", "1");
+			response.put("status", "ok");
+			responseStatus=HttpStatus.OK;
+		}else{
+			response.put("message", "No existe ningun usuario con Apellido: '"+ lastname +"'.");
+			response.put("status", "error");
+			response.put("code", "404");
+			responseStatus=HttpStatus.NOT_FOUND;
+		}
+			
+		return new ResponseEntity<Map<String,Object>>(response, responseStatus);
+	}
 		
-		@DeleteMapping("/delete")
-		  public ResponseEntity<Map<String, Object>> deleteOrg(@RequestParam(value="token",required = true) String token) {
-			Map<String, Object> response = new HashMap<>();
-			User searchedByTokenUser = userService.findByToken(token);
-			if (searchedByTokenUser != null) {
+		
+	// Register New User.
+	@PostMapping("/add")
+	public ResponseEntity<Map<String, Object>> nuevaOrganizacion(@RequestBody @Valid UserDTO userDTO){
+			
+		//log.info("Organization: "+organizationDto.toString());
+			
+		Map<String, Object> response = new HashMap<>();
+		UserDTO newUser = userService.save(userDTO);
+			
+		response.put("items: ", newUser);
+		response.put("totalResults", "1");
+		response.put("status", "ok");
+		response.put("token", "token"+newUser.getEmail()+newUser.getPhone());
+			
+		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+	} 
+		
+	// Delete User.
+	@DeleteMapping("/delete")
+	public ResponseEntity<Map<String, Object>> deleteOrg(@RequestParam(value="token",required = true) String token) {
+		Map<String, Object> response = new HashMap<>();
+		User searchedByTokenUser = userService.findByToken(token);
+		
+		if (searchedByTokenUser != null) {
 				
-				searchedByTokenUser.setActive(false);
-				userService.delete(searchedByTokenUser);
+			searchedByTokenUser.setActive(false);
+			userService.delete(searchedByTokenUser);
 				
-				response.put("totalResults", "1");
-				response.put("status", "ok");
-				response.put("message","El Usuario "+searchedByTokenUser.getName()+" ha sido desactivado/borrado");
-				
-			}else{
-				response.put("mensaje", "El Usuario que intenta borrar/desactivar no existe.");
-				response.put("status", "error");
-				response.put("code", "404");
+			response.put("totalResults", "1");
+			response.put("status", "ok");
+			response.put("message","El Usuario "+searchedByTokenUser.getName()+" ha sido desactivado/borrado");
+			responseStatus=HttpStatus.OK;	
+		}else{
+			response.put("mensaje", "El Usuario que intenta borrar/desactivar no existe.");
+			response.put("status", "error");
+			response.put("code", "404");
+			responseStatus=HttpStatus.NOT_FOUND;
 			}
 			
-			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
-		  }
+		return new ResponseEntity<Map<String,Object>>(response, responseStatus);
+	}
 
 		
-		// update User.
-		
-		@PutMapping("/update")
-		public ResponseEntity<Map<String, Object>> update(	@RequestParam(value="token",required = true) String token, 
-															@RequestBody @Valid UserDTO userDTO){
-			Map<String, Object> response = new HashMap<>();
+	// update User.
+	@PutMapping("/update")
+	public ResponseEntity<Map<String, Object>> update(	@RequestParam(value="token",required = true) String token, 
+														@RequestBody @Valid UserDTO userDTO){
+		Map<String, Object> response = new HashMap<>();
+		User updateUser = userService.findByToken(token);
 			
-			User updateUser = userService.findByToken(token);
-			
-			if (updateUser!=null) {
+		if (updateUser!=null) {
 				
-				UserDTO newUpdateUser = userService.update(userDTO,token);
+			UserDTO newUpdateUser = userService.update(userDTO,token);
 				
-				//OrganizationDto newOrganization = organizationService.save(orgDTO);
-				//OrganizationDto updateOrg = organizationService.update(orgDto);
-				response.put("Usuario: ", newUpdateUser);
-				response.put("totalResults", "1");
-				response.put("status", "ok");
-				//response.put("message","El Usuario "+newUpdateUser.getName()+" ha sido actualizado.");
-			}else {
-				response.put("token: ", token);
-				response.put("updateOrg: ", updateUser);
-				response.put("mensaje", "No se pudo actualizar la informacion del Usuario.");
+			response.put("Usuario: ", newUpdateUser);
+			response.put("totalResults", "1");
+			response.put("status", "ok");
+			responseStatus=HttpStatus.OK;
+		}else {
+			response.put("token: ", token);
+			response.put("updateOrg: ", updateUser);
+			response.put("mensaje", "No se pudo actualizar la informacion del Usuario.");
+			responseStatus=HttpStatus.NOT_FOUND;
 			}
 			
-			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
-		}
+		return new ResponseEntity<Map<String,Object>>(response,responseStatus);
+	}
 		
 }

@@ -1,5 +1,6 @@
 package com.chardy.springSisTurn.restcontroller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ import com.chardy.springSisTurn.entity.Event;
 import com.chardy.springSisTurn.entity.Organization;
 import com.chardy.springSisTurn.entity.Turn;
 import com.chardy.springSisTurn.entity.User;
+import com.chardy.springSisTurn.service.IEventService;
 import com.chardy.springSisTurn.service.ITurnService;
 import com.chardy.springSisTurn.wrapper.TurnWrapper;
 
@@ -36,6 +38,8 @@ public class TurnRestcontroller {
 	
 	@Autowired
 	private ITurnService turnService;
+	@Autowired
+	private IEventService eventService;
 	HttpStatus responseStatus;
 	
 	// list all turns
@@ -45,7 +49,7 @@ public class TurnRestcontroller {
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		
 		List<Turn> turnos = turnService.getAll();
-		response.put("items", turnos);
+		response.put("data", turnos);
 		response.put("totalResults", turnos.size());
 		response.put("status", "ok");
 		return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
@@ -59,16 +63,40 @@ public class TurnRestcontroller {
 		
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		
-		Organization turnosOrg = turnService.findByCuit(cuit); // busco la org por el cuit
+		Organization turnosOrg = turnService.findByCuit(cuit); 	// busco la org por el cuit
+		//Long turnIdOrg = turnosOrg.getId();						// obtengo el id de la org
 		
+		Set<Event> eventos = turnosOrg.getEvents();				// Busco los eventos de la org
 		
-		Long turnIdOrg = turnosOrg.getId();
+		//Event event = turnService.findEventById(idEvent);
+		//Set<Turn> turnsEvent = event.getTurns();
+		//List<Turn> turnos = turnService.
 		
-		//List<Turn> turnos = turnService.finAllByIdOrg(turnIdOrg);
+		//HashMap<String, Object> turnosDeEventos = new HashMap<String, Object>();
+		//HashMap<Integer, Object> turnos = new HashMap<Integer, Object>();
+		/*
+		Integer i=0;
+		for(Event elemento : eventos ) {
+			
+			turnosDeEventos.put("event", elemento);
+			turnosDeEventos.put("Turns", elemento.getTurns());
+			
+			log.info("evento: "+ elemento.toString());
+			log.info("evento con turno: "+ turnosDeEventos);
+			
+			turnos.put(i,turnosDeEventos);
+				log.info("turnos: "+ turnos);
+			turnosDeEventos.remove("event");
+			turnosDeEventos.remove("Turns");
+			i++;
+		}
 		
-		//response.put("items", turnos);
-		//response.put("totalResults", turnos.size());
-		response.put("status", "ok " + turnIdOrg);
+		for(i=0; i < eventos.size();i++) {
+			
+		}
+*/
+		response.put("data", eventos);
+		response.put("status", "ok");
 		return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
 	}
 	
@@ -88,7 +116,7 @@ public class TurnRestcontroller {
 		response.put("status", "ok");
 		response.put("data", turnsEvent);
 		response.put("totalResults", turnsEvent.size());
-		response.put("event", event);
+		//response.put("event", event);
 		//response.put("turnsEvent", turnsEvent);
 		responseStatus= HttpStatus.OK;
 		
